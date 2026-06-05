@@ -23,7 +23,11 @@
         "pullPolicy": {
           "type": "string",
           "title": "Image pull policy",
-          "enum": ["IfNotPresent", "Always", "Never"],
+          "enum": [
+            "IfNotPresent",
+            "Always",
+            "Never"
+          ],
           "default": "IfNotPresent"
         },
         "tag": {
@@ -106,7 +110,11 @@
         "type": {
           "type": "string",
           "title": "Service type",
-          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "enum": [
+            "ClusterIP",
+            "NodePort",
+            "LoadBalancer"
+          ],
           "default": "ClusterIP"
         },
         "port": {
@@ -271,7 +279,11 @@
             "pullPolicy": {
               "type": "string",
               "title": "Image pull policy",
-              "enum": ["IfNotPresent", "Always", "Never"],
+              "enum": [
+                "IfNotPresent",
+                "Always",
+                "Never"
+              ],
               "default": "IfNotPresent"
             },
             "tag": {
@@ -359,7 +371,11 @@
             "type": {
               "type": "string",
               "title": "Service type",
-              "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+              "enum": [
+                "ClusterIP",
+                "NodePort",
+                "LoadBalancer"
+              ],
               "default": "ClusterIP"
             },
             "port": {
@@ -518,16 +534,14 @@
           "default": "false"
         },
         "OASGEN_PROVIDER_MAX_RECONCILE_RATE": {
-          "type": ["integer", "string"],
+          "type": [
+            "integer",
+            "string"
+          ],
           "title": "Max reconcile rate",
           "default": 1
         }
       }
-    },
-    "oasgen-provider-crd": {
-      "type": "object",
-      "title": "CRD subchart values",
-      "default": {}
     }
   }
 }

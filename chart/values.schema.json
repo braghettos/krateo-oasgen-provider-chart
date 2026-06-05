@@ -1,0 +1,533 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "type": "object",
+  "title": "OasgenProvider",
+  "description": "Full-coverage values schema for the oasgen-provider chart, pinned to installer 2.7.0 / chart 0.9.0.",
+  "additionalProperties": false,
+  "properties": {
+    "replicaCount": {
+      "type": "integer",
+      "title": "Replica count",
+      "default": 1
+    },
+    "image": {
+      "type": "object",
+      "title": "Controller image",
+      "additionalProperties": false,
+      "properties": {
+        "repository": {
+          "type": "string",
+          "title": "Image repository",
+          "default": "ghcr.io/krateoplatformops/oasgen-provider"
+        },
+        "pullPolicy": {
+          "type": "string",
+          "title": "Image pull policy",
+          "enum": ["IfNotPresent", "Always", "Never"],
+          "default": "IfNotPresent"
+        },
+        "tag": {
+          "type": "string",
+          "title": "Image tag",
+          "default": ""
+        }
+      }
+    },
+    "imagePullSecrets": {
+      "type": "array",
+      "title": "Image pull secrets",
+      "default": [],
+      "items": {
+        "type": "object"
+      }
+    },
+    "nameOverride": {
+      "type": "string",
+      "title": "Name override",
+      "default": ""
+    },
+    "fullnameOverride": {
+      "type": "string",
+      "title": "Fullname override",
+      "default": ""
+    },
+    "serviceAccount": {
+      "type": "object",
+      "title": "Service account",
+      "additionalProperties": false,
+      "properties": {
+        "create": {
+          "type": "boolean",
+          "title": "Create service account",
+          "default": true
+        },
+        "automount": {
+          "type": "boolean",
+          "title": "Automount API credentials",
+          "default": true
+        },
+        "annotations": {
+          "type": "object",
+          "title": "Service account annotations",
+          "default": {}
+        },
+        "name": {
+          "type": "string",
+          "title": "Service account name",
+          "default": ""
+        }
+      }
+    },
+    "podAnnotations": {
+      "type": "object",
+      "title": "Pod annotations",
+      "default": {}
+    },
+    "podLabels": {
+      "type": "object",
+      "title": "Pod labels",
+      "default": {}
+    },
+    "podSecurityContext": {
+      "type": "object",
+      "title": "Pod security context",
+      "default": {}
+    },
+    "securityContext": {
+      "type": "object",
+      "title": "Container security context",
+      "default": {}
+    },
+    "service": {
+      "type": "object",
+      "title": "Service",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": "string",
+          "title": "Service type",
+          "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+          "default": "ClusterIP"
+        },
+        "port": {
+          "type": "integer",
+          "title": "Service port",
+          "default": 80
+        }
+      }
+    },
+    "ingress": {
+      "type": "object",
+      "title": "Ingress",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Ingress enabled",
+          "default": false
+        },
+        "className": {
+          "type": "string",
+          "title": "Ingress class name",
+          "default": ""
+        },
+        "annotations": {
+          "type": "object",
+          "title": "Ingress annotations",
+          "default": {}
+        },
+        "hosts": {
+          "type": "array",
+          "title": "Ingress hosts",
+          "items": {
+            "type": "object",
+            "properties": {
+              "host": {
+                "type": "string"
+              },
+              "paths": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string"
+                    },
+                    "pathType": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tls": {
+          "type": "array",
+          "title": "Ingress TLS",
+          "default": [],
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "resources": {
+      "type": "object",
+      "title": "Resources",
+      "default": {}
+    },
+    "autoscaling": {
+      "type": "object",
+      "title": "Autoscaling",
+      "additionalProperties": false,
+      "properties": {
+        "enabled": {
+          "type": "boolean",
+          "title": "Autoscaling enabled",
+          "default": false
+        },
+        "minReplicas": {
+          "type": "integer",
+          "title": "Minimum replicas",
+          "default": 1
+        },
+        "maxReplicas": {
+          "type": "integer",
+          "title": "Maximum replicas",
+          "default": 100
+        },
+        "targetCPUUtilizationPercentage": {
+          "type": "integer",
+          "title": "Target CPU utilization percentage",
+          "default": 80
+        },
+        "targetMemoryUtilizationPercentage": {
+          "type": "integer",
+          "title": "Target memory utilization percentage"
+        }
+      }
+    },
+    "volumes": {
+      "type": "array",
+      "title": "Additional volumes",
+      "default": [
+        {
+          "emptyDir": {},
+          "name": "tmp-dir"
+        }
+      ],
+      "items": {
+        "type": "object"
+      }
+    },
+    "volumeMounts": {
+      "type": "array",
+      "title": "Additional volume mounts",
+      "default": [
+        {
+          "mountPath": "/tmp",
+          "name": "tmp-dir"
+        }
+      ],
+      "items": {
+        "type": "object"
+      }
+    },
+    "nodeSelector": {
+      "type": "object",
+      "title": "Node selector",
+      "default": {}
+    },
+    "tolerations": {
+      "type": "array",
+      "title": "Tolerations",
+      "default": [],
+      "items": {
+        "type": "object"
+      }
+    },
+    "affinity": {
+      "type": "object",
+      "title": "Affinity",
+      "default": {}
+    },
+    "rdc": {
+      "type": "object",
+      "title": "rest-dynamic-controller (rdc)",
+      "description": "Values for the rest-dynamic-controller sub-block deployed by oasgen-provider.",
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "type": "object",
+          "title": "rdc image",
+          "additionalProperties": false,
+          "properties": {
+            "repository": {
+              "type": "string",
+              "title": "Image repository",
+              "default": "ghcr.io/krateoplatformops/rest-dynamic-controller"
+            },
+            "pullPolicy": {
+              "type": "string",
+              "title": "Image pull policy",
+              "enum": ["IfNotPresent", "Always", "Never"],
+              "default": "IfNotPresent"
+            },
+            "tag": {
+              "type": "string",
+              "title": "Image tag",
+              "default": "0.6.0"
+            }
+          }
+        },
+        "replicaCount": {
+          "type": "integer",
+          "title": "Replica count",
+          "default": 1
+        },
+        "imagePullSecrets": {
+          "type": "array",
+          "title": "Image pull secrets",
+          "default": [],
+          "items": {
+            "type": "object"
+          }
+        },
+        "nameOverride": {
+          "type": "string",
+          "title": "Name override",
+          "default": ""
+        },
+        "fullnameOverride": {
+          "type": "string",
+          "title": "Fullname override",
+          "default": ""
+        },
+        "serviceAccount": {
+          "type": "object",
+          "title": "Service account",
+          "additionalProperties": false,
+          "properties": {
+            "create": {
+              "type": "boolean",
+              "title": "Create service account",
+              "default": true
+            },
+            "automount": {
+              "type": "boolean",
+              "title": "Automount API credentials",
+              "default": true
+            },
+            "annotations": {
+              "type": "object",
+              "title": "Service account annotations",
+              "default": {}
+            },
+            "name": {
+              "type": "string",
+              "title": "Service account name",
+              "default": ""
+            }
+          }
+        },
+        "podAnnotations": {
+          "type": "object",
+          "title": "Pod annotations",
+          "default": {}
+        },
+        "podLabels": {
+          "type": "object",
+          "title": "Pod labels",
+          "default": {}
+        },
+        "podSecurityContext": {
+          "type": "object",
+          "title": "Pod security context",
+          "default": {}
+        },
+        "securityContext": {
+          "type": "object",
+          "title": "Container security context",
+          "default": {}
+        },
+        "service": {
+          "type": "object",
+          "title": "Service",
+          "additionalProperties": false,
+          "properties": {
+            "type": {
+              "type": "string",
+              "title": "Service type",
+              "enum": ["ClusterIP", "NodePort", "LoadBalancer"],
+              "default": "ClusterIP"
+            },
+            "port": {
+              "type": "integer",
+              "title": "Service port",
+              "default": 80
+            }
+          }
+        },
+        "ingress": {
+          "type": "object",
+          "title": "Ingress",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Ingress enabled",
+              "default": false
+            },
+            "className": {
+              "type": "string",
+              "title": "Ingress class name",
+              "default": ""
+            },
+            "annotations": {
+              "type": "object",
+              "title": "Ingress annotations",
+              "default": {}
+            },
+            "hosts": {
+              "type": "array",
+              "title": "Ingress hosts",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "host": {
+                    "type": "string"
+                  },
+                  "paths": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "path": {
+                          "type": "string"
+                        },
+                        "pathType": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "tls": {
+              "type": "array",
+              "title": "Ingress TLS",
+              "default": [],
+              "items": {
+                "type": "object"
+              }
+            }
+          }
+        },
+        "resources": {
+          "type": "object",
+          "title": "Resources",
+          "default": {}
+        },
+        "autoscaling": {
+          "type": "object",
+          "title": "Autoscaling",
+          "additionalProperties": false,
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "title": "Autoscaling enabled",
+              "default": false
+            },
+            "minReplicas": {
+              "type": "integer",
+              "title": "Minimum replicas",
+              "default": 1
+            },
+            "maxReplicas": {
+              "type": "integer",
+              "title": "Maximum replicas",
+              "default": 100
+            },
+            "targetCPUUtilizationPercentage": {
+              "type": "integer",
+              "title": "Target CPU utilization percentage",
+              "default": 80
+            },
+            "targetMemoryUtilizationPercentage": {
+              "type": "integer",
+              "title": "Target memory utilization percentage"
+            }
+          }
+        },
+        "volumes": {
+          "type": "array",
+          "title": "Additional volumes",
+          "default": [],
+          "items": {
+            "type": "object"
+          }
+        },
+        "volumeMounts": {
+          "type": "array",
+          "title": "Additional volume mounts",
+          "default": [],
+          "items": {
+            "type": "object"
+          }
+        },
+        "nodeSelector": {
+          "type": "object",
+          "title": "Node selector",
+          "default": {}
+        },
+        "tolerations": {
+          "type": "array",
+          "title": "Tolerations",
+          "default": [],
+          "items": {
+            "type": "object"
+          }
+        },
+        "affinity": {
+          "type": "object",
+          "title": "Affinity",
+          "default": {}
+        },
+        "env": {
+          "type": "object",
+          "title": "Environment variables",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "env": {
+      "type": "object",
+      "title": "Environment variables",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "properties": {
+        "OASGEN_PROVIDER_DEBUG": {
+          "type": "string",
+          "title": "Debug logging",
+          "default": "false"
+        },
+        "OASGEN_PROVIDER_MAX_RECONCILE_RATE": {
+          "type": ["integer", "string"],
+          "title": "Max reconcile rate",
+          "default": 1
+        }
+      }
+    },
+    "oasgen-provider-crd": {
+      "type": "object",
+      "title": "CRD subchart values",
+      "default": {}
+    }
+  }
+}

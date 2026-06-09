@@ -472,6 +472,16 @@
       "type": "object",
       "title": "Global values",
       "description": "Helm global values (injected when this chart is used as a subchart)."
+    },
+    "livenessProbe": {
+      "type": "object",
+      "description": "Kubernetes probe configuration (httpGet/tcpSocket/exec + timing). Empty/unset uses chart defaults.",
+      "additionalProperties": true
+    },
+    "readinessProbe": {
+      "type": "object",
+      "description": "Kubernetes probe configuration (httpGet/tcpSocket/exec + timing). Empty/unset uses chart defaults.",
+      "additionalProperties": true
     }
   }
 }

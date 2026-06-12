@@ -17,8 +17,14 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 version: CHART_VERSION
 
-home: https://krateo.io
-icon: "https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg"
 
+appVersion: CHART_VERSION
+home: https://krateo.io
+icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+keywords:
+  - krateo
+  - platformops
+  - oasgen-provider
+  - crd
 sources:
-  - https://github.com/krateoplatformops/oasgen-provider-chart
+  - https://github.com/braghettos/oasgen-provider

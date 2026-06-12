@@ -1,7 +1,6 @@
-# Reusable OCI publish workflow for braghettos Krateo blueprint charts.
-# Copy to each fork's .github/workflows/release-oci.yaml. Publishes the chart
-# (and its crd-chart dependency, if present) to oci://ghcr.io/braghettos/charts
-# on a semver tag push.
+# Canonical OCI publish workflow for Krateo blueprint-fork charts (chart/ + optional
+# crd-chart/). Publishes both to the consolidated registry oci://ghcr.io/braghettos/krateo
+# on a semver tag push. Identical across all single-chart krateo-* fork repos.
 name: release-oci
 
 on:
@@ -13,7 +12,7 @@ permissions:
   packages: write
 
 env:
-  OCI_REPO: oci://ghcr.io/braghettos/charts
+  OCI_REPO: oci://ghcr.io/braghettos/krateo
 
 jobs:
   package-and-push:
@@ -41,7 +40,7 @@ jobs:
       - name: Helm setup
         uses: azure/setup-helm@v4
         with:
-          version: v3.16.3
+          version: v3.19.0
 
       - name: Registry login
         run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin

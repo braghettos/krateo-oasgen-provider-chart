@@ -22,7 +22,7 @@ permissions:
 env:
   OCI_REPO: oci://ghcr.io/braghettos/krateo
   # The application (codebase) repo whose latest semver tag is APP_VERSION (the deployed image tag).
-  APP_REPO: braghettos/oasgen-provider
+  APP_REPO: braghettos/krateo-oasgen-provider
 
 jobs:
   package-and-push:

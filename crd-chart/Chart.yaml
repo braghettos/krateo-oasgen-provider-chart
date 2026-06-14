@@ -1,5 +1,5 @@
 apiVersion: v2
-name: oasgen-provider-crd
+name: krateo-oasgen-provider-crd
 description: Krateo PlatformOps OasGen Provider CRDs
 
 # A chart can be either an 'application' or a 'library' chart.

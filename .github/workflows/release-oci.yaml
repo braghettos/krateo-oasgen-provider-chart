@@ -6,6 +6,14 @@ name: release-oci
 on:
   push:
     tags: ["[0-9]+.[0-9]+.[0-9]+"]
+  workflow_dispatch:
+    inputs:
+      chart_version:
+        description: "Chart version (CHART_VERSION). Default: the git tag."
+        required: false
+      app_version:
+        description: "App image version (APP_VERSION). Default: latest tag of APP_REPO."
+        required: false
 
 permissions:
   contents: read
@@ -13,6 +21,8 @@ permissions:
 
 env:
   OCI_REPO: oci://ghcr.io/braghettos/krateo
+  # The application (codebase) repo whose latest semver tag is APP_VERSION (the deployed image tag).
+  APP_REPO: braghettos/krateo-oasgen-provider
 
 jobs:
   package-and-push:
@@ -23,11 +33,25 @@ jobs:
 
       - name: Set versions
         id: ver
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CHART_VERSION_INPUT: ${{ github.event.inputs.chart_version }}
+          APP_VERSION_INPUT: ${{ github.event.inputs.app_version }}
         run: |
-          CHART_VERSION="${GITHUB_REF_NAME}"
+          # CHART_VERSION = CI input, else the trigger tag.
+          CHART_VERSION="${CHART_VERSION_INPUT:-${GITHUB_REF_NAME}}"
           echo "chart_version=${CHART_VERSION}" >> "$GITHUB_OUTPUT"
-          # appVersion defaults to chart version unless already pinned in Chart.yaml
-          echo "app_version=${CHART_VERSION}" >> "$GITHUB_OUTPUT"
+          # APP_VERSION = CI input, else the latest semver tag of the application repo (the image
+          # tag the chart deploys). Only consumed by charts that ship an image (appVersion: APP_VERSION);
+          # charts with no image have no appVersion, so this is a no-op for them.
+          if [ -n "${APP_VERSION_INPUT}" ]; then
+            APP_VERSION="${APP_VERSION_INPUT}"
+          else
+            APP_VERSION="$(gh api "repos/${APP_REPO}/tags" --paginate --jq '.[].name' \
+              | grep -E '^[0-9]+\.[0-9]+\.[0-9]+$' | sort -V | tail -1)"
+          fi
+          echo "app_version=${APP_VERSION}" >> "$GITHUB_OUTPUT"
+          echo "resolved: CHART_VERSION=${CHART_VERSION}  APP_VERSION=${APP_VERSION}  (APP_REPO=${APP_REPO})"
 
       - name: Substitute version placeholders
         run: |

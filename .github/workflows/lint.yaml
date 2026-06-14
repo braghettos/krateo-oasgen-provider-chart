@@ -1,6 +1,6 @@
 # Canonical Krateo chart-repo lint workflow. PR-time validation for every chart in
 # the repo — helm lint, values.schema.json well-formedness, and a render smoke test.
-# Shape-agnostic: discovers chart/, crd-chart/ and charts/* (vendored dependency
+# Shape-agnostic: discovers chart/, crds-subchart/ and charts/* (vendored dependency
 # charts sit deeper and are skipped). Identical across all krateo-* chart repos.
 name: lint
 
@@ -27,7 +27,7 @@ jobs:
       - name: Lint, validate schema, render
         run: |
           set -euo pipefail
-          # All first-class charts (chart/, crd-chart/, charts/*). Vendored dependency
+          # All first-class charts (chart/, crds-subchart/, charts/*). Vendored dependency
           # charts live at depth >=4 (e.g. charts/x/charts/dep), so -maxdepth 3 excludes them.
           mapfile -t dirs < <(find . -maxdepth 3 -name Chart.yaml -printf '%h\n' | sort -u)
           fail=0

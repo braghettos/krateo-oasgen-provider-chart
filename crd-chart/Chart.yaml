@@ -18,7 +18,6 @@ type: application
 version: CHART_VERSION
 
 
-appVersion: CHART_VERSION
 home: https://krateo.io
 icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
 keywords:

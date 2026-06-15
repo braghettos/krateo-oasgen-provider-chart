@@ -1,5 +1,5 @@
 # Canonical OCI publish workflow for Krateo blueprint-fork charts (chart/ + optional
-# crd-chart/). Publishes both to the consolidated registry oci://ghcr.io/braghettos/krateo
+# crds-subchart/). Publishes both to the consolidated registry oci://ghcr.io/braghettos/krateo
 # on a semver tag push. Identical across all single-chart krateo-* fork repos.
 name: release-oci
 
@@ -55,7 +55,7 @@ jobs:
 
       - name: Substitute version placeholders
         run: |
-          for f in chart/Chart.yaml crd-chart/Chart.yaml; do
+          for f in chart/Chart.yaml crds-subchart/Chart.yaml; do
             [ -f "$f" ] || continue
             sed -i "s/CHART_VERSION/${{ steps.ver.outputs.chart_version }}/g" "$f"
             sed -i "s/APP_VERSION/${{ steps.ver.outputs.app_version }}/g" "$f"
@@ -69,10 +69,10 @@ jobs:
       - name: Registry login
         run: echo "${{ secrets.GITHUB_TOKEN }}" | helm registry login ghcr.io -u "${{ github.actor }}" --password-stdin
 
-      - name: Package & push crd-chart (if present)
+      - name: Package & push crds-subchart (if present)
         run: |
-          if [ -f crd-chart/Chart.yaml ]; then
-            helm package crd-chart -d dist/
+          if [ -f crds-subchart/Chart.yaml ]; then
+            helm package crds-subchart -d dist/
             helm push dist/*-crd-*.tgz "${OCI_REPO}" 2>/dev/null || helm push "$(ls dist/*.tgz | head -1)" "${OCI_REPO}"
             rm -rf dist
           fi

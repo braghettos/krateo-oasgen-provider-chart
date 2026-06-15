@@ -16,7 +16,7 @@ Part of the [krateo-installer](https://github.com/braghettos/krateo-installer) e
 | Path | Chart | OCI artifact |
 |------|-------|--------------|
 | `chart/` | `oasgen-provider` (appVersion 0.8.0) | `oci://ghcr.io/braghettos/krateo/oasgen-provider` |
-| `crd-chart/` | `oasgen-provider-crd` | `oci://ghcr.io/braghettos/krateo/oasgen-provider-crd` |
+| `crds-subchart/` | `oasgen-provider-crd` | `oci://ghcr.io/braghettos/krateo/oasgen-provider-crd` |
 
 ## How the installer consumes it
 
@@ -45,8 +45,12 @@ helm template smoke chart
 
 ## Release
 
-Push a semver tag (`X.Y.Z`) — CI packages `chart/` and `crd-chart/` and publishes both to
+Push a semver tag (`X.Y.Z`) — CI packages `chart/` and `crds-subchart/` and publishes both to
 `oci://ghcr.io/braghettos/krateo`.
+
+The CRD sub-chart (`crds-subchart/`) is versioned independently and its `RestDefinition` CRD is
+regenerated and pushed here automatically by the `krateo-oasgen-provider` code-repo CI (a PR per
+component tag); the directory name is the standardized `crds-subchart/`.
 
 ## Links
 

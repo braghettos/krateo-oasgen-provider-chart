@@ -3,6 +3,9 @@ name: krateo-oasgen-provider
 description: Krateo PlatformOps OASGen Provider
 annotations:
   krateo.io/display-name: OASGen Provider
+  krateo.io/category: generator
+  krateo.io/maturity: stable
+  krateoSupportedVersion: ">= 2.5.1"
 
 # A chart can be either an 'application' or a 'library' chart.
 #
@@ -25,7 +28,7 @@ version: CHART_VERSION
 # It is recommended to use it with quotes.
 appVersion: "0.8.1"
 home: https://krateo.io
-icon: https://github.com/krateoplatformops/krateo/blob/main/docs/media/logo.svg
+icon: https://raw.githubusercontent.com/krateoplatformops/krateo/main/docs/media/logo.svg
 keywords:
   - krateo
   - platformops

@@ -1,9 +1,9 @@
 apiVersion: core.krateo.io/v1alpha1
 kind: CompositionDefinition
 metadata:
-  name: oasgen-provider
+  name: krateo-oasgen-provider
   namespace: krateo-system
 spec:
   chart:
-    url: oci://ghcr.io/braghettos/krateo/oasgen-provider
-    version: "0.9.0"
+    url: oci://ghcr.io/braghettos/krateo/krateo-oasgen-provider
+    version: "0.9.5"

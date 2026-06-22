@@ -1,6 +1,8 @@
 apiVersion: v2
 name: krateo-oasgen-provider
 description: Krateo PlatformOps OASGen Provider
+annotations:
+  krateo.io/display-name: OASGen Provider
 
 # A chart can be either an 'application' or a 'library' chart.
 #

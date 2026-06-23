@@ -13,11 +13,11 @@ spec:
       {{- include "oasgen-provider.selectorLabels" . | nindent 6 }}
   template:
     metadata:
-      checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
-      {{- with .Values.podAnnotations }}
       annotations:
+        checksum/configmap: {{ printf "%s%s%s%s" (include (print $.Template.BasePath "/configmap.yaml") .) (include (print $.Template.BasePath "/rdc-configmap.yaml") .) (include (print $.Template.BasePath "/rdc-deployment.yaml") .) (include (print $.Template.BasePath "/rdc-rbac.yaml") .) | sha256sum }}
+        {{- with .Values.podAnnotations }}
         {{- toYaml . | nindent 8 }}
-      {{- end }}
+        {{- end }}
       labels:
         {{- include "oasgen-provider.labels" . | nindent 8 }}
         {{- with .Values.podLabels }}

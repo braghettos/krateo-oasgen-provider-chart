@@ -15,7 +15,10 @@ type: application
 # This is the chart version. This version number should be incremented each time you make changes
 # to the chart and its templates, including the app version.
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
-version: 0.9.5
+# Versioned with the SAME release tag as the main chart (krateo-oasgen-provider): the CHART_VERSION
+# placeholder is substituted to the git tag by release-oci.yaml, so one chart-repo tag publishes the
+# app + CRD charts at the same version. The installer pins both at one version. (Was 0.9.5.)
+version: CHART_VERSION
 
 
 home: https://krateo.io

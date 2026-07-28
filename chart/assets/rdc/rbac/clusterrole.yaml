@@ -18,6 +18,15 @@ rules:
 - apiGroups: [""]
   resources: ["secrets"]
   verbs: ["get", "list", "watch"]
+# Required by the secretRef field resolver (RDC >= 0.12.0): on Create/Update the controller
+# self-provisions a per-CR-instance Role + RoleBinding scoping access to exactly the Secrets
+# that CR's secretRef resolvers name, and tears them down on Delete. Without this grant the
+# controller cannot manage those objects and every secretRef-bearing resource fails to
+# reconcile with "cannot get resource \"roles\"". Mirrors the reference RBAC in the
+# oasgen-provider repo (manifests/rdc/rbac.yaml).
+- apiGroups: ["rbac.authorization.k8s.io"]
+  resources: ["roles", "rolebindings"]
+  verbs: ["create", "get", "update", "patch", "delete"]
 - apiGroups: ["events.k8s.io"]
   resources: ["events"]
   verbs: ["create", "patch", "update"]

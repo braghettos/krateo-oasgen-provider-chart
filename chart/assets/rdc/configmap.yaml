@@ -11,6 +11,10 @@ metadata:
     app.kubernetes.io/part-of: krateoplatformops
     app.kubernetes.io/managed-by: krateo
 data:
+  REST_CONTROLLER_SERVICEACCOUNT_NAME: {{ "{{" }} .composition_controller_sa_name {{ "}}" }}
+  REST_CONTROLLER_SERVICEACCOUNT_NAMESPACE: {{ "{{" }} .composition_controller_sa_namespace {{ "}}" }}
+  # home should be set to /tmp or any other writable directory to avoid permission issues with helm https://github.com/helm/helm/issues/8038
+  HOME: /tmp
   {{- range $key, $value := .Values.rdc.env }}
   {{ $key }}: {{ $value | quote }}
   {{- end }}

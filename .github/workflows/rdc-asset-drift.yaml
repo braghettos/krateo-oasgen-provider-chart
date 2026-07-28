@@ -1,0 +1,49 @@
+# Guards chart/assets/rdc/ against drifting from the reference copies in the oasgen-provider repo
+# (manifests/rdc/). The two feed DIFFERENT install paths — manifests/ is what a local-dev deployment
+# mounts, chart/assets/ is what actually ships — so a difference is a bug that reproduces on one path
+# and is invisible on the other. That is exactly how the last four were found, one at a time:
+#
+#   * chart ConfigMap never supplied REST_CONTROLLER_SERVICEACCOUNT_NAME/_NAMESPACE -> RDC >= 0.12.0
+#     crash-looped                                                                        (#18)
+#   * chart ClusterRole lacked roles/rolebindings -> secretRef could not self-provision its per-CR
+#     Role                                                                    (fixed in 0.9.11)
+#   * repo ClusterRole lacked secrets -> that Role creation failed Kubernetes' privilege-escalation
+#     check                                                                               (#20)
+#   * repo ClusterRole lacked events.k8s.io/events -> no events from a manifests-based deployment
+#
+# The check is semantic, not a diff: the two copies differ deliberately (Helm labels, a three-part
+# resource name, a .Values.rdc.env passthrough) and only the RBAC grants and ConfigMap data keys are
+# compared. If a future difference is intentional, teach hack/rdc-asset-drift.py to ignore it rather
+# than deleting this job.
+name: rdc-asset-drift
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  drift:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout chart
+        uses: actions/checkout@v5
+        with:
+          path: chart-repo
+
+      # The reference copies live in the code repo. Pinned to its default branch: this asserts the
+      # shipping chart agrees with current upstream, which is the property that keeps breaking.
+      - name: Checkout oasgen-provider (reference manifests)
+        uses: actions/checkout@v5
+        with:
+          repository: braghettos/krateo-oasgen-provider
+          path: provider-repo
+
+      - name: Compare RDC assets
+        run: |
+          python3 -m pip install --quiet pyyaml
+          python3 chart-repo/hack/rdc-asset-drift.py provider-repo chart-repo \
+            || { echo "::error::chart/assets/rdc/ drifted from oasgen-provider manifests/rdc/ — see the diff above"; exit 1; }

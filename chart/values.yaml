@@ -112,7 +112,7 @@ rdc:
     # bump it here whenever a new rest-dynamic-controller version should ship with the chart.
     # Must be >= 0.12.0, which is when RDC began requiring the SA-identity env vars that
     # assets/rdc/configmap.yaml supplies (REST_CONTROLLER_SERVICEACCOUNT_NAME/_NAMESPACE).
-    tag: 0.13.0
+    tag: 0.14.0
   replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""

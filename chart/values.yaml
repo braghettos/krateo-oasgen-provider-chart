@@ -107,7 +107,12 @@ rdc:
   image:
     repository: ghcr.io/braghettos/krateo-rest-dynamic-controller
     pullPolicy: IfNotPresent
-    tag: 0.9.0
+    # NOTE: hand-maintained. The release workflow's APP_VERSION substitution applies to
+    # Chart.yaml only, never to values.yaml, so this tag does NOT auto-track RDC releases —
+    # bump it here whenever a new rest-dynamic-controller version should ship with the chart.
+    # Must be >= 0.12.0, which is when RDC began requiring the SA-identity env vars that
+    # assets/rdc/configmap.yaml supplies (REST_CONTROLLER_SERVICEACCOUNT_NAME/_NAMESPACE).
+    tag: 0.13.0
   replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""

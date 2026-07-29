@@ -35,4 +35,4 @@ keywords:
   - oasgen-provider
   - openapi
 sources:
-  - https://github.com/braghettos/oasgen-provider
+  - https://github.com/braghettos/krateo-oasgen-provider/tree/APP_VERSION

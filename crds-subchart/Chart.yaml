@@ -17,8 +17,13 @@ type: application
 # Versions are expected to follow Semantic Versioning (https://semver.org/)
 # Versioned with the SAME release tag as the main chart (krateo-oasgen-provider): the CHART_VERSION
 # placeholder is substituted to the git tag by release-oci.yaml, so one chart-repo tag publishes the
-# app + CRD charts at the same version. The installer pins both at one version. (Was 0.9.5.)
-version: 0.0.2
+# app + CRD charts at the same version, and the installer pins both at one version.
+#
+# Do not replace this with a literal. It was one before (0.0.1, then 0.0.2) — not by choice: the
+# provider repo's CRD-sync job used to rewrite any non-semver `version:` to 0.0.1, which silently
+# undid this exact line twice. That job now preserves the placeholder
+# (krateo-oasgen-provider#39), which is what makes this safe to declare again.
+version: CHART_VERSION
 
 
 home: https://krateo.io
@@ -29,4 +34,4 @@ keywords:
   - oasgen-provider
   - crd
 sources:
-  - https://github.com/braghettos/oasgen-provider
+  - https://github.com/braghettos/krateo-oasgen-provider/tree/APP_VERSION

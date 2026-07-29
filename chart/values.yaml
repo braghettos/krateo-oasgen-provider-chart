@@ -112,7 +112,12 @@ rdc:
     # bump it here whenever a new rest-dynamic-controller version should ship with the chart.
     # Must be >= 0.12.0, which is when RDC began requiring the SA-identity env vars that
     # assets/rdc/configmap.yaml supplies (REST_CONTROLLER_SERVICEACCOUNT_NAME/_NAMESPACE).
-    tag: 0.14.0
+    #
+    # 0.16.1 brings two things a chart user cannot otherwise reach: [?key=value] array
+    # predicates in fieldMapping paths (0.16.0), which address an array element by content
+    # instead of by position; and the fix for a CR whose create failed being undeletable
+    # (0.16.1) — it held its finalizer forever and blocked its namespace with it.
+    tag: 0.16.1
   replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""

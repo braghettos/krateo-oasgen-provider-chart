@@ -113,7 +113,15 @@ rdc:
     # Must be >= 0.12.0, which is when RDC began requiring the SA-identity env vars that
     # assets/rdc/configmap.yaml supplies (REST_CONTROLLER_SERVICEACCOUNT_NAME/_NAMESPACE).
     #
-    # 0.18.0 is pinned because this chart ships oasgen 0.18.0, and two of that release's
+    # 0.19.0 is pinned because this chart ships oasgen 0.19.0, whose apiKey-in-header support
+    # (#49) is a JOINT contract: oasgen generates an `authentication.apiKey` block in the
+    # Configuration CRD, RDC reads the header name and optional valuePrefix out of it and
+    # sends the credential. This pairing differs from the ones below in ONE respect worth
+    # knowing: an older RDC fails LOUDLY here — auth.ToType returns "unknown auth type:
+    # apiKey" and the reconcile errors — rather than silently doing the wrong thing. The pin
+    # still moves, so the feature works out of the box instead of erroring on first use.
+    #
+    # 0.18.0 was pinned because this chart shipped oasgen 0.18.0, and two of that release's
     # features are a JOINT contract: oasgen accepts and validates them, RDC executes them.
     # An older RDC does not reject such a RestDefinition — it ignores the field and does
     # the wrong thing silently, which is the failure mode this pin exists to prevent.
@@ -134,10 +142,10 @@ rdc:
     # fieldMapping paths (0.16.0), which address an array element by content instead of by
     # position, and the fix for a CR whose create failed being undeletable (0.16.1).
     #
-    # No chart-side change accompanies this bump: 0.16.1 -> 0.18.0 touches controller
+    # No chart-side change accompanies this bump: 0.16.1 -> 0.19.0 touches controller
     # internals and CI only — no new flags, env vars or RBAC (verified against main.go and
     # the tag-to-tag diff).
-    tag: 0.18.0
+    tag: 0.19.0
   replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""

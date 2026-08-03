@@ -51,6 +51,17 @@ rules:
   - configmaps
   verbs:
   - '*'
+# Read access to every group so the provider can inspect the CRDs and Custom
+# Resources it generates, whose apiGroup is chosen per RestDefinition
+# (spec.resourceGroup) and therefore cannot be enumerated here.
+#
+# `watch` is required, not optional: the provider registers a dynamic watch on each
+# generated <Kind>Configuration so a Configuration change re-syncs its auth-secret
+# RBAC immediately instead of waiting for the next resync. With get+list only, that
+# watch is refused for every generated Kind and the provider logs
+#   <kind>configurations.<group> is forbidden: User "system:serviceaccount:..."
+#   cannot watch resource "<kind>configurations" ... at the cluster scope
+# once per Kind, forever, while the feature silently degrades to resync-only.
 - apiGroups:
   - "*"
   resources:
@@ -58,3 +69,4 @@ rules:
   verbs:
   - get
   - list
+  - watch

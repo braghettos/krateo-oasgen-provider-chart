@@ -5,6 +5,12 @@
 replicaCount: 1
 
 image:
+  # NOTE: this repository moved to the krateo-platformops org, so future releases will
+  # publish to ghcr.io/krateo-platformops/oasgen-provider. It is deliberately NOT changed
+  # yet: that package currently has NO tags at all (oasgen has not released since the
+  # move), so pointing at it today would break every install with ImagePullBackOff. The
+  # braghettos package still serves 0.19.0 and remains correct until the first release
+  # lands in the new namespace -- at which point this line and appVersion move together.
   repository: ghcr.io/braghettos/krateo-oasgen-provider
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
@@ -105,7 +111,12 @@ affinity: {}
 
 rdc:
   image:
-    repository: ghcr.io/braghettos/krateo-rest-dynamic-controller
+    # The rest-dynamic-controller repository moved to the krateo-platformops org, so its
+    # releases now publish here. The OLD ghcr.io/braghettos/krateo-rest-dynamic-controller
+    # package still exists but is FROZEN at 0.19.0 -- it can never receive another release,
+    # so bumping only the tag against it would pin a nonexistent image. Repository and tag
+    # therefore move together, and both are verified present in the registry.
+    repository: ghcr.io/krateo-platformops/rest-dynamic-controller
     pullPolicy: IfNotPresent
     # NOTE: hand-maintained. The release workflow's APP_VERSION substitution applies to
     # Chart.yaml only, never to values.yaml, so this tag does NOT auto-track RDC releases —
@@ -142,10 +153,20 @@ rdc:
     # fieldMapping paths (0.16.0), which address an array element by content instead of by
     # position, and the fix for a CR whose create failed being undeletable (0.16.1).
     #
-    # No chart-side change accompanies this bump: 0.16.1 -> 0.19.0 touches controller
+    # No chart-side change accompanies these bumps: 0.16.1 -> 0.20.0 touches controller
     # internals and CI only — no new flags, env vars or RBAC (verified against main.go and
     # the tag-to-tag diff).
-    tag: 0.19.0
+    #
+    # 0.20.0 adds two fixes found while running this stack against a live API:
+    #   * Secret-sourced credentials are trimmed. A trailing newline — the default outcome
+    #     of `jq -r ... > file`, echo and most editors, faithfully preserved by
+    #     `kubectl create secret --from-file` — previously reached http.Header.Set and
+    #     failed every request with `net/http: invalid header field value for
+    #     "Authorization"`, naming neither the credential nor the cause.
+    #   * compareScope: updatable narrows drift comparison to the fields the update verb's
+    #     body can actually express, so a create-only or server-assigned field can no longer
+    #     drive an update that changes nothing and then repeats forever.
+    tag: 0.20.0
   replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""
